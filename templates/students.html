@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Alunos{% endblock %}
+{% block content %}
+
+<div class="flex">
+    <h1>Listagem de Alunos</h1>
+    <button id='back' type="button" onclick='backfunction()' class="btn btn-outline-primary">Cadastrar Aluno</button>
+</div>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">RA</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Email</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for student in allStudents %}
+        <tr>
+            <td>{{student.ra}}</td>
+            <td>{{student.nome_do_aluno}}</td>
+            <td>{{student.email_do_aluno}}</td>
+            
+            <td>
+                <button onclick='editfunction("{{student.ra}}")'  class="btn btn-primary"><img src="{{ url_for('static',filename='images/editar.png')}}"></button>
+            </td>
+            <td>
+                <button onclick='deletefunction("{{student.ra}}")'  class="btn btn-danger"><img src="{{ url_for('static',filename='images/excluir.png')}}"></button>
+            </td>
+        </tr>
+        
+{% endfor %}
+
+    </tbody>
+  </table>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type=text/javascript>
+function editfunction(ra) {
+    window.location.href = '/student/'+ra;
+}
+
+function backfunction(){
+    window.location.href = '/student';
+}
+
+function deletefunction(ra){
+    $.ajax({
+        url: `/del_student/${ra}`,
+        method: 'DELETE',
+        success: function(data) {
+            location.reload()
+        } 
+    })
+}
+</script>
+
+{% endblock %}
